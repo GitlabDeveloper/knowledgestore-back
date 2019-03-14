@@ -6,13 +6,24 @@ cache:
 stages:
   - build
   - test
-
+  - deploy
+  
 build:
   stage: build
   script:
     - mvn compile
+  artifacts:
+    paths:
+      - target/knowledgestore-back.jar
 
 test:
   stage: test
   script:
     - mvn test
+    
+deploy_on_prod:
+  stage: deploy
+  environment:
+    name: production
+    url: http://tracker.eklib.com
+  when: manual
