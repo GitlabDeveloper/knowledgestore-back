@@ -2,7 +2,6 @@ cache:
   paths:
     - target/
 
-
 stages:
   - build
   - test
@@ -21,9 +20,11 @@ test:
   script:
     - mvn test
     
-deploy_on_prod:
+deploy_prod:
   stage: deploy
   environment:
     name: production
     url: http://tracker.eklib.com
   when: manual
+  only:
+  - master
