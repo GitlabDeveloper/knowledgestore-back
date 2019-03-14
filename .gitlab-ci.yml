@@ -1,5 +1,5 @@
 before-script:
-  mvn --batch-mode verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.4.0.905:sonar -Dsonar.projectKey=AlexeyRadkevich_knowledgestore-back -Dsonar.organization=alexeyradkevich-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=e5e00947f52ecf2ed65dd4ac886307fcfd897f19
+  - mvn --batch-mode verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.4.0.905:sonar -Dsonar.projectKey=AlexeyRadkevich_knowledgestore-back -Dsonar.organization=alexeyradkevich-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=e5e00947f52ecf2ed65dd4ac886307fcfd897f19
 cache:
   paths:
     - target/
