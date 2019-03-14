@@ -22,6 +22,8 @@ test:
     
 deploy_prod:
   stage: deploy
+  script:
+    - echo "Deploy to production server"
   environment:
     name: production
     url: http://tracker.eklib.com
