@@ -1,6 +1,5 @@
-cache:
-  paths:
-    - target/
+before_script:
+  - rm -rf /home/gitlab-runner/builds
 
 stages:
   - build
