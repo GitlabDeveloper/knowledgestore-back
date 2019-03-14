@@ -1,3 +1,7 @@
+cache:
+  paths:
+    - target/
+
 stages:
   - build
   - test
