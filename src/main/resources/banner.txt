@@ -1,0 +1,9 @@
+${AnsiColor.CYAN} ______    _  __   _        _____    ____      ${AnsiColor.RED}  _____            __   _
+${AnsiColor.CYAN}|  ____|  | |/ /  | |      |_   _|  |  _ \     ${AnsiColor.RED} / ____|          / _| | |
+${AnsiColor.CYAN}| |___    | ' /   | |        | |    | |_) |    ${AnsiColor.RED}| (___     ___   | |_  | |_  __      __   __ _   _ __    ___
+${AnsiColor.CYAN}|  ___|   |  <    | |        | |    |  _ <     ${AnsiColor.RED} \___ \   / _ \  |  _| | __| \ \ /\ / /  / _` | | '__|  / _ \
+${AnsiColor.CYAN}| |____   | . \   | |____   _| |_   | |_) |    ${AnsiColor.RED} ____) | | (_) | | |   | |_   \ V  V /  | (_| | | |    |  __/
+${AnsiColor.CYAN} \_____|  |_|\_\  |______| |_____|  |____/     ${AnsiColor.RED}|_____/   \___/  |_|    \__|   \_/\_/    \__,_| |_|     \___|
+
+
+${AnsiColor.BLUE}:: DIGICO :: Running Spring Boot ${spring-boot.version} ::
