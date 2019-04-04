@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/quiz")
+@RequestMapping("/api/v1/")
+
 public class QuizController {
 
     private final QuizRepository quizRepository;
@@ -15,6 +16,5 @@ public class QuizController {
     public QuizController(QuizRepository quizRepository) {
         this.quizRepository = quizRepository;
     }
-    
 
 }

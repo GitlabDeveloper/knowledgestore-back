@@ -34,9 +34,13 @@ public class Question {
     )
     private Set<QuestionOption> questionOptions = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "correct_option_id", nullable = false)
-    private QuestionOption correctOption;
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "question_question_correct_option",
+            joinColumns = {@JoinColumn(name = "question_id")},
+            inverseJoinColumns = {@JoinColumn(name = "question_correct_option_id")}
+    )
+    private Set<QuestionOption> correctOption;
 
     private String explanation;
 
