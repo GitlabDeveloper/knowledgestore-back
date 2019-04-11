@@ -49,7 +49,7 @@ public class User extends DateAudit {
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private transient Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
 

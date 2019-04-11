@@ -55,12 +55,12 @@ public class AuthController {
         this.tokenProvider = tokenProvider;
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/signIn")
     public ResponseEntity authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsernameOrEmail(),
+                        loginRequest.getEmail(),
                         loginRequest.getPassword()
                 )
         );
@@ -71,7 +71,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/signUp")
     public ResponseEntity registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity<>(new ApiResponse(false, "Username is already taken!"),
