@@ -4,6 +4,7 @@ import com.eklib.knowledgestore.model.category.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -25,6 +26,10 @@ public class Question {
 
     @Column(nullable = false)
     private String text;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 60)
+    private QuestionType type;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(
