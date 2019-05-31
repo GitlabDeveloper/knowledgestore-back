@@ -8,6 +8,8 @@ public class QuestionDTO {
     private String text;
     private String type;
     private List<QuestionOptionDTO> questionOptions;
+    private Long quizId;
+    private String explanation;
 
     public QuestionDTO() {
     }
@@ -18,6 +20,29 @@ public class QuestionDTO {
         this.text = text;
         this.type = type;
         this.questionOptions = questionOptions;
+    }
+
+    public QuestionDTO(String text, List<QuestionOptionDTO> questionOptions, Long quizId, String explanation) {
+        this.text = text;
+        this.questionOptions = questionOptions;
+        this.quizId = quizId;
+        this.explanation = explanation;
+    }
+
+    public Long getQuizId() {
+        return quizId;
+    }
+
+    public void setQuizId(Long quizId) {
+        this.quizId = quizId;
+    }
+
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
     }
 
     public Long getId() {
