@@ -2,19 +2,23 @@ package com.eklib.knowledgestore.controller;
 
 import com.eklib.knowledgestore.dto.QuestionDTO;
 import com.eklib.knowledgestore.dto.QuestionOptionDTO;
+import com.eklib.knowledgestore.dto.QuizAnswersDTO;
 import com.eklib.knowledgestore.dto.QuizDTO;
 import com.eklib.knowledgestore.model.question.Question;
 import com.eklib.knowledgestore.model.user.User;
 import com.eklib.knowledgestore.repository.QuizRepository;
 import com.eklib.knowledgestore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import com.eklib.knowledgestore.model.quiz.Quiz;
 
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @RestController
@@ -79,6 +83,28 @@ public class QuizController {
         quizRepository.save(quiz);
         quiz.setUser(null);
         return quiz;
+    }
+
+    @PostMapping(value = "/check", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String checkAnswers(@RequestBody QuizAnswersDTO quizAnswers) {
+        Quiz quiz = quizRepository.getOne(quizAnswers.getQuizId());
+        Set<Question> questions = quiz.getQuestions();
+        Set<Long> questionCorrectOptions = new HashSet<>();
+        questions.forEach(question ->
+                question.getCorrectOption().forEach(correctOption ->
+                        questionCorrectOptions.add(correctOption.getId())
+                )
+        );
+        AtomicInteger result = new AtomicInteger(0);
+        quizAnswers.getAnswerIds().forEach(answerId -> {
+            if (questionCorrectOptions.contains(answerId)) result.getAndIncrement();
+        });
+
+        return "{\"name\" : \"Ваш результат "
+                .concat(String.valueOf(result.get()))
+                .concat(" из ")
+                .concat(String.valueOf(questionCorrectOptions.size()))
+                .concat("\"}");
     }
 
     private List<QuestionDTO> getQuestionDTOsFromQuiz(Quiz quiz) {
