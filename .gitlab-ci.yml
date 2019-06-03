@@ -25,10 +25,6 @@ test-sonar:
 deploy_prod:
   stage: deploy
   script:
-    - echo "Deploy to production server"
-  environment:
-    name: production
-    url: http://tracker.eklib.com
-  when: manual
+    - mvn deploy
   only:
-  - master
+    - master
