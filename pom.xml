@@ -14,11 +14,6 @@
     <name>knowledgestore</name>
     <description>Project for testing students</description>
 
-    <distributionManagement>
-        <downloadUrl>http://http://li1397-182.members.linode.com/</downloadUrl>
-        <status>deployed</status>
-    </distributionManagement>
-
     <properties>
         <java.version>1.8</java.version>
     </properties>
