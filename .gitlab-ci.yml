@@ -30,7 +30,7 @@ test-sonar:
 deploy_prod:
 stage: deploy
   script:
-    - 'rm -rf /opt/tomcat/webapps/ROOT*'
-    - 'cp target/knowledgestore-0.0.1-SNAPSHOT.war /opt/tomcat/webapps/ROOT.war'
+    - rm -rf /opt/tomcat/webapps/ROOT*
+    - cp target/knowledgestore-0.0.1-SNAPSHOT.war /opt/tomcat/webapps/ROOT.war
   only:
     - master
