@@ -28,7 +28,7 @@ test-sonar:
     - mvn --batch-mode verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar -Dsonar.projectKey=GitlabDeveloper_knowledgestore-back -Dsonar.organization=gitlabdeveloper-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ca7e268987fb4b31c1dfaa34aaa1107733119c9b
     
 deploy_prod:
-stage: deploy
+  stage: deploy
   script:
     - rm -rf /opt/tomcat/webapps/ROOT*
     - cp target/knowledgestore-0.0.1-SNAPSHOT.war /opt/tomcat/webapps/ROOT.war
