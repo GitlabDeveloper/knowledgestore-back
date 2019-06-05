@@ -34,3 +34,8 @@ deploy_prod:
     - cp target/knowledgestore-0.0.1-SNAPSHOT.war /opt/tomcat/webapps/ROOT.war
   only:
     - master
+    
+run:
+  stage: run
+  script:
+    - mvn spring-boot:run
