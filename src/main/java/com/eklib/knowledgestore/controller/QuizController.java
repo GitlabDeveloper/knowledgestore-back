@@ -1,10 +1,8 @@
 package com.eklib.knowledgestore.controller;
 
-import com.eklib.knowledgestore.dto.QuestionDTO;
-import com.eklib.knowledgestore.dto.QuestionOptionDTO;
-import com.eklib.knowledgestore.dto.QuizAnswersDTO;
-import com.eklib.knowledgestore.dto.QuizDTO;
+import com.eklib.knowledgestore.dto.*;
 import com.eklib.knowledgestore.model.question.Question;
+import com.eklib.knowledgestore.model.question.QuestionOption;
 import com.eklib.knowledgestore.model.user.User;
 import com.eklib.knowledgestore.repository.QuizRepository;
 import com.eklib.knowledgestore.repository.UserRepository;
@@ -15,10 +13,8 @@ import com.eklib.knowledgestore.model.quiz.Quiz;
 
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @RestController
@@ -44,7 +40,7 @@ public class QuizController {
                         quiz.getUser().getId(),
                         quiz.getName(),
                         quiz.getDescription(),
-                        getQuestionDTOsFromQuiz(quiz)
+                        getQuestionDTOsFromQuiz(quiz, false)
                 )
         ).collect(Collectors.toList());
     }
@@ -67,7 +63,7 @@ public class QuizController {
                 quiz.getUser().getId(),
                 quiz.getName(),
                 quiz.getDescription(),
-                getQuestionDTOsFromQuiz(quiz)
+                getQuestionDTOsFromQuiz(quiz, false)
         );
     }
 
@@ -86,45 +82,53 @@ public class QuizController {
     }
 
     @PostMapping(value = "/check", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String checkAnswers(@RequestBody QuizAnswersDTO quizAnswers) {
+    public QuizResultDTO checkAnswers(@RequestBody QuizAnswersDTO quizAnswers) {
         Quiz quiz = quizRepository.getOne(quizAnswers.getQuizId());
-        Set<Question> questions = quiz.getQuestions();
-        Set<Long> questionCorrectOptions = new HashSet<>();
-        questions.forEach(question ->
-                question.getCorrectOption().forEach(correctOption ->
-                        questionCorrectOptions.add(correctOption.getId())
-                )
-        );
-        AtomicInteger result = new AtomicInteger(0);
-        quizAnswers.getAnswerIds().forEach(answerId -> {
-            if (questionCorrectOptions.contains(answerId)) result.getAndIncrement();
-        });
+        Set<Long> answersIds = quizAnswers.getAnswerIds();
 
-        return "{\"name\" : \"Ваш результат "
-                .concat(String.valueOf(result.get()))
-                .concat(" из ")
-                .concat(String.valueOf(questionCorrectOptions.size()))
-                .concat("\"}");
+        List<QuestionDTO> questionDTOList = getQuestionDTOsFromQuiz(quiz, true);
+        questionDTOList.forEach(questionDTO ->
+                questionDTO.getQuestionOptions().forEach(questionOptionDTO -> {
+                    if (answersIds.contains(questionOptionDTO.getId()) && questionOptionDTO.getCorrect() == null) {
+                        questionOptionDTO.setCorrect(false);
+                    }
+                })
+        );
+
+        QuizDTO quizDTO = new QuizDTO(
+                quiz.getId(),
+                quiz.getUser().getId(),
+                quiz.getName(),
+                quiz.getDescription(),
+                questionDTOList
+        );
+
+        return new QuizResultDTO(quizDTO, "lol");
     }
 
-    private List<QuestionDTO> getQuestionDTOsFromQuiz(Quiz quiz) {
+    private List<QuestionDTO> getQuestionDTOsFromQuiz(Quiz quiz, Boolean withCorrectAnswers) {
         return quiz.getQuestions().stream()
                 .map(question -> new QuestionDTO(
                         question.getId(),
                         question.getCategory().getName(),
                         question.getText(),
                         question.getType().name(),
-                        getQuestionOptionDTOFromQuestion(question)))
+                        getQuestionOptionDTOFromQuestion(question, withCorrectAnswers),
+                        withCorrectAnswers ? question.getExplanation() : null))
                 .sorted(Comparator.comparing(QuestionDTO::getId))
                 .collect(Collectors.toList());
     }
 
-    private List<QuestionOptionDTO> getQuestionOptionDTOFromQuestion(Question question) {
+    private List<QuestionOptionDTO> getQuestionOptionDTOFromQuestion(Question question, Boolean withCorrectAnswers) {
+        Set<Long> correctOptionsIds = question.getCorrectOption().stream()
+                .map(QuestionOption::getId)
+                .collect(Collectors.toSet());
         return question.getQuestionOptions()
                 .stream()
                 .map(questionOption -> new QuestionOptionDTO(
                         questionOption.getId(),
-                        questionOption.getText()))
+                        questionOption.getText(),
+                        correctOptionsIds.contains(questionOption.getId()) && withCorrectAnswers ? true : null))
                 .collect(Collectors.toList());
     }
 }

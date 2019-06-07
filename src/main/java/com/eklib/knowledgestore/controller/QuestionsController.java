@@ -50,7 +50,7 @@ public class QuestionsController {
             QuestionOption questionOption = new QuestionOption();
             questionOption.setText(item.getText());
             questionOptionRepository.save(questionOption);
-            if (item.isCorrect()) {
+            if (item.getCorrect()) {
                 correctOptions.add(questionOption);
             }
             options.add(questionOption);

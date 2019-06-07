@@ -14,12 +14,14 @@ public class QuestionDTO {
     public QuestionDTO() {
     }
 
-    public QuestionDTO(Long id, String category, String text, String type, List<QuestionOptionDTO> questionOptions) {
+    public QuestionDTO(Long id, String category, String text, String type, List<QuestionOptionDTO> questionOptions,
+                       String explanation) {
         this.id = id;
         this.category = category;
         this.text = text;
         this.type = type;
         this.questionOptions = questionOptions;
+        this.explanation = explanation;
     }
 
     public QuestionDTO(String text, List<QuestionOptionDTO> questionOptions, Long quizId, String explanation) {
